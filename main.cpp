@@ -1,66 +1,49 @@
 #include <iostream>
-#include<string>
+#include <string>
+
 using namespace std;
 class stu
 {
 public:
     string name;
     int age;
-/*    stu(string n, int a)
-    {
-        cout << "构造函数" << endl;
-        name = n;
-        age = a;
-
-    }*/
-    stu(/*stu *this,*/string name, int age)//this关键字只能用于类中的非静态成员函数中
-    {
-//        cout << "构造函数" << endl;
-        cout<<"构造函数"<<":"<<this<<endl;//this就是一个指向当前对象的指针
-        this->name = name;//当函数成员中的局部变量与类中的数据成员出现重名，此时可以使用this关键字来加以区分
-        this->age = age;
-
+    int score;//const修饰类中的数据成员，意味着该成员
+    stu(string name,int age,int score){
+        this->name=name;
+        this->age=age;
+        this->score=score;
     }
-    stu* print()
-    {
-        cout << name << age << endl;
-        return this;//返回当前对象的自身引用
+    stu(const stu& temp){//拷贝构造函数   ---定义了拷贝规则
+        this->name=temp.name;
+        this->age=temp.age;
+        this->score=temp.score;
     }
-
-    //析构函数的定义              当对象在销毁时则会自动触发析构函数的调用
-    //析构函数的特点：1.名字是 ~+类名   2，没有返回类型  3，没有形参，析构在类中只有一个 4，不需要用户手动去调用
-    //析构函数的作用：清理收尾工作
-    //析构函数如果用户没有提供，编译器会自动生成一个
-    ~stu()
-    {
-        cout << "析构函数" <<this<< endl;
-
-    }
-
-
 };
 
-void test()
-{
-    static   stu s3("sss", 10);
-    cout << "test1111" << endl;
-
-
+void test(stu& ss){
+    cout<<ss.name<<" "<<ss.age<<" "<<ss.score<<endl;
 }
 
+stu mytest(){
+    stu s11("ljs1",112,133);
+    cout<<"mytest"<<endl;
+    return s11;
+}
 
-int main()
-{
+int main() {
+    //stu s1("ljs",12,33);
+    //stu s2=s1;
+    //cout<<s2.name<<" "<<s2.age<<" "<<s2.score<<endl;
 
-//    stu  s1("zhang", 12),s2("yang",33);
-//    test();
-//    stu("kkk",33);//创建一个匿名对象,一旦离开了匿名对象的创建语句则该对象将被销毁
-//    cout << "test=============" << endl;
-    stu s1("zhang",12);//我们在创建对象时，系统会自动传递一个隐形的实参，就是当前的对象指针，类中普通成员函数和构造函数都带有这个隐形形参
-    cout<<"类外1："<<&s1<<endl;
-    stu s2("yang",33);
-    cout<<"类外2："<<&s2<<endl;
+    const stu s1("zhang",33,44);//在定义对象前面加了const就相当于将该对象中的所有数据成员都加了const，外部访问只能读成员的 值不能试图修改
+    cout<<s1.name<<s1.age<<endl;
+//    s1.age=33;
+//    s1.test();//通过常对象来调用类中的普通成员函数 是不允许的
+
+    /*stu s3(s1);
+    cout<<s3.name<<" "<<s3.age<<" "<<s3.score<<endl;*/
+//    test(s1);
+    stu s11 = mytest();
+    cout<<s11.name<<" "<<s11.age<<" "<<s11.score<<endl;
     return 0;
 }
-
-
